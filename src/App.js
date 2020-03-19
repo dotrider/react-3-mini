@@ -31,6 +31,12 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/vehicles').then( res => { 
+        this.setState({
+          vehiclesToDisplay: res.data
+        })
+        toast.success("Got them cars!")
+      }).catch(() => toast.error('Failed to catch Vehicles'))
   }
 
   getPotentialBuyers() {
@@ -60,6 +66,16 @@ class App extends Component {
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`).then(res => {
+      console.log('update', res.data.vehicles)
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      }) 
+      toast.success('Successfully Updated');
+      
+    }).catch(() => toast.error('Failed at updating price'));
+
+
   }
 
   addCar() {
@@ -70,9 +86,15 @@ class App extends Component {
       year: this.year.value,
       price: this.price.value
     };
-
+// console.log(newCar)
     // axios (POST)
     // setState with response -> vehiclesToDisplay
+    axios.post('https://joes-autos.herokuapp.com/api/vehicles', newCar).then(res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      })
+      toast.success('Added your car!');
+    }).catch(() => toast.error('Failed to add car'))
   }
 
   addBuyer() {
@@ -89,6 +111,13 @@ class App extends Component {
   deleteBuyer(id) {
     // axios (DELETE)
     //setState with response -> buyersToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`).then(res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      })
+      toast.success('Vehicle Removed!');
+    }).catch(() => toast.error('Failed to removed'))
+
   }
 
   nameSearch() {
@@ -172,7 +201,7 @@ class App extends Component {
         </div>
       );
     });
-
+//////////////////////
     return (
       <div>
         <ToastContainer />
